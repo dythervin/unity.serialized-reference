@@ -2,10 +2,6 @@
 using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
-#if AUTO_ATTACH
-using System.Reflection;
-using Dythervin.AutoAttach;
-#endif
 
 namespace Dythervin.SerializedReference
 {
@@ -120,7 +116,7 @@ namespace Dythervin.SerializedReference
 
         public static implicit operator Ref<T>(Object obj)
         {
-            return new Ref<T> { value = obj };
+            return new Ref<T> { Obj = obj };
         }
 
         public static implicit operator Ref<T>(T obj)
@@ -129,35 +125,4 @@ namespace Dythervin.SerializedReference
         }
     }
 
-#if AUTO_ATTACH
-    internal class RefSetter : AutoSetter
-    {
-        public override bool Compatible(Type value)
-        {
-            return value.IsGenericType && value.GetGenericTypeDefinition() == typeof(Ref<>);
-        }
-
-        public override bool TrySetField(Component target, FieldInfo fieldInfo, AutoAttachAttribute attribute)
-        {
-            Type targetType = fieldInfo.FieldType.GenericTypeArguments[0];
-            IRef referenceField = (IRef)fieldInfo.GetValue(target);
-            if (referenceField.Obj)
-                return false;
-
-
-            referenceField.Obj = attribute.type switch
-            {
-                AutoAttachType.Children => target.GetComponentInChildren(targetType),
-                AutoAttachType.Parent => target.GetComponentInParent(targetType),
-                _ => target.GetComponent(targetType)
-            };
-
-            bool set = referenceField.Obj;
-            if (set)
-                fieldInfo.SetValue(target, referenceField);
-
-            return set;
-        }
-    }
-#endif
 }
