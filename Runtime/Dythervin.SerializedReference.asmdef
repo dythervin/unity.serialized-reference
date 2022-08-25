@@ -1,0 +1,17 @@
+{
+    "name": "Dythervin.SerializedReference",
+    "rootNamespace": "Dythervin.SerializedReference",
+    "references": [
+        "GUID:0d2722be3221441990b3d439a49d3d00",
+        "GUID:7afb353a1daa88e4797d2da07d684a54"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,18 @@
+{
+  "name": "com.dythervin.unity.serialized-reference",
+  "version": "1.0.1",
+  "unity": "2020.3",
+  "unityRelease": "0f1",
+  "keywords": [],
+  "author": {
+    "name": "Dythervin",
+    "email": "dythervin@gmail.com",
+    "url": "https://github.com/dythervin"
+  },
+  "displayName": "serialized-reference",
+  "dependencies": {
+    "com.dythervin.unity.core": "1.0.1",
+    "com.dythervin.unity.object-selector": "1.0.1",
+    "com.dythervin.unity.assets": "1.0.1"
+  }
+}

@@ -1,0 +1,21 @@
+{
+    "name": "Dythervin.SerializedReference.Editor",
+    "rootNamespace": "Dythervin.SerializedReference",
+    "references": [
+        "GUID:b1a4a8cafa6a5274d8b627054dcdbadf",
+        "GUID:0d2722be3221441990b3d439a49d3d00",
+        "GUID:91604c9839ab4f65a1701aa5b8a66b9f",
+        "GUID:b966010acae04071ad47aedc02c40c1b"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

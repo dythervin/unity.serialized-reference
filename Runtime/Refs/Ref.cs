@@ -1,30 +1,14 @@
 ﻿using System;
-using System.Linq;
+using Dythervin.Core.Utils;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Dythervin.SerializedReference
+namespace Dythervin.SerializedReference.Refs
 {
-#if ODIN_INSPECTOR
-    using Sirenix.OdinInspector;
-#endif
-
-    public interface IRef
-    {
-        public Object Obj { get; set; }
-    }
-
     [Serializable]
-#if ODIN_INSPECTOR
-    [HideLabel]
-#endif
     public struct Ref<T> : ISerializationCallbackReceiver, IRef
         where T : class
     {
-#if UNITY_EDITOR && ODIN_INSPECTOR
-        [GUIColor(nameof(GetColor))]
-        [LabelText("@" + nameof(StaticName))]
-#endif
         [SerializeField] private Object value;
 
         [NonSerialized] public T Value;
@@ -34,14 +18,20 @@ namespace Dythervin.SerializedReference
             get => value;
             set
             {
-                this.value = value switch
+                switch (value)
                 {
-                    GameObject gameObject => gameObject.TryGetComponent(out T component)
-                        ? component as Object
-                        : null,
-                    T component => component as Object,
-                    _ => null
-                };
+                    case GameObject gameObject:
+                    {
+                        this.value = gameObject.TryGetComponent(out T component) ? component as Object : null;
+                        break;
+                    }
+                    case T component:
+                        this.value = component as Object;
+                        break;
+                    default:
+                        this.value = null;
+                        break;
+                }
             }
         }
 
@@ -80,35 +70,7 @@ namespace Dythervin.SerializedReference
                     return obj is T;
             }
         }
-#if UNITY_EDITOR
-        private static readonly Color InvalidColor;
-        private static readonly string StaticName;
 
-        static Ref()
-        {
-            Type type = typeof(T);
-            StaticName = type.Name;
-
-            if (type.IsInterface)
-                StaticName = StaticName.Remove(0, 1);
-            if (type.IsGenericType)
-            {
-                int index = StaticName.IndexOf("`", StringComparison.Ordinal);
-                StaticName = StaticName.Remove(index);
-                var gParams = type.GenericTypeArguments;
-                StaticName = $"{StaticName}<{string.Join(", ", gParams.Select(x => x.Name))}>";
-            }
-
-            InvalidColor = new Color(1, .35f, .35f);
-        }
-
-        private Color GetColor()
-        {
-            return Validate(value)
-                ? Color.white
-                : InvalidColor;
-        }
-#endif
         public static implicit operator T(Ref<T> a)
         {
             return a.Value;
@@ -125,4 +87,14 @@ namespace Dythervin.SerializedReference
         }
     }
 
+#if UNITY_EDITOR
+    internal static class Ref
+    {
+        [UnityEditor.Callbacks.DidReloadScripts]
+        private static void OnCompile()
+        {
+            Symbols.AddSymbol("DYTHERVIN_REF");
+        }
+    }
+#endif
 }
