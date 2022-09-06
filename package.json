@@ -12,7 +12,6 @@
   "displayName": "serialized-reference",
   "dependencies": {
     "com.dythervin.unity.core": "1.0.1",
-    "com.dythervin.unity.object-selector": "1.0.1",
     "com.dythervin.unity.assets": "1.0.1"
   }
 }
